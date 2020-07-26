@@ -88,6 +88,20 @@
                             ?>">
                         </button>
                     </li>
+
+                    <li ng-click="Content.toggleLike(item.id)"
+                        class="util"
+                        news-stop-propagation>
+                        <button class="unlike svg"
+                                ng-hide="item.liked"
+                                title="<?php p($l->t('Like article')); ?>">
+                        </button>
+                        <button class="like svg"
+                                ng-show="item.liked"
+                                title="<?php p($l->t('Unlike article')); ?>">
+                        </button>
+                    </li>
+                    
                     <li class="util more" news-stop-propagation ng-hide="noPlugins">
                         <button class="icon-more" news-toggle-show="#actions-{{item.id}}"></button>
                         <div class="article-actions" id="actions-{{item.id}}">
@@ -157,9 +171,8 @@
 
             <div>
                 <a class="twitter-share-button"
-                    ng-href="https://twitter.com/intent/tweet?text={{ Content.adaptTextTo(item.title)}}">
-                    Tweet {{ item.body }} </a>
-                    <p>{{ Content.getFeed(item.feedId).body }}</p>
+                    ng-href="https://twitter.com/intent/tweet?text={{ item.title }}">
+                    Tweet</a>
             </div>
         </li>
     </ul>

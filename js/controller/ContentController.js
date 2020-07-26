@@ -52,6 +52,10 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
         ItemResource.toggleStar(itemId);
     };
 
+    this.toggleLike = function (itemId) {
+        ItemResource.toggleLike(itemId);
+    };
+
     this.toggleItem = function (item) {
         // TODO: unittest
         if (this.isCompactView()) {
@@ -199,13 +203,6 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
         } else {
             return '';
         }
-    };
-
-    //Form adapting to share on another platforms, like twitter.
-    this.adaptTextTo = function () {
-        //return FeedResource.adaptText(text);
-        var test = 'test';
-        return test;
     };
 
     this.refresh = function () {

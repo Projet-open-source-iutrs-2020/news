@@ -20,6 +20,7 @@ app.factory('ItemResource', function (Resource, $http, BASE_URL, ITEM_BATCH_SIZE
 
     ItemResource.prototype.clear = function () {
         this.starredCount = 0;
+        this.likedCount = 0;
         this.lowestId = 0;
         this.highestId = 0;
         this.fingerprints = {};
@@ -103,12 +104,46 @@ app.factory('ItemResource', function (Resource, $http, BASE_URL, ITEM_BATCH_SIZE
         });
     };
 
-
     ItemResource.prototype.toggleStar = function (itemId) {
         if (this.get(itemId).starred) {
             this.star(itemId, false);
         } else {
             this.star(itemId, true);
+        }
+    };
+
+
+    ItemResource.prototype.like = function (itemId, isLiked) {
+        if (isLiked === undefined) {
+            isLiked = true;
+        }
+
+        var it = this.get(itemId);
+        var url = this.BASE_URL +
+            '/items/' + it.feedId + '/' + it.guidHash + '/like';
+
+        it.liked = isLiked;
+
+        if (isLiked) {
+            this.likedCount += 1;
+        } else {
+            this.likedCount -= 1;
+        }
+
+        return this.http({
+            url: url,
+            method: 'POST',
+            data: {
+                isLiked: isLiked
+            }
+        });
+    };
+
+    ItemResource.prototype.toggleLike = function (itemId) {
+        if (this.get(itemId).liked) {
+            this.like(itemId, false);
+        } else {
+            this.like(itemId, true);
         }
     };
 

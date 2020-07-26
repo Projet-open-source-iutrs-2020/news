@@ -316,6 +316,14 @@
     background-image: url('../img/hover_star.svg');
 }
 
+#app-content .utils .unlike {
+    background-image: url('../img/inactive_thumb_up.svg');
+}
+
+#app-content .utils .like {
+    background-image: url('../img/active_thumb_up.svg');
+}
+
 #app-content .utils .more button {
     opacity: .3;
 }
