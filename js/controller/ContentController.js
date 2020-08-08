@@ -276,6 +276,7 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
     this.getPos = function (event) {
         this.pos.x = event.clientX;
         this.pos.y = event.clientY;
+        alert(pos);
     };
 
     /**
