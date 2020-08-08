@@ -7,9 +7,10 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @copyright Bernhard Posselt 2014
  */
-app.controller('ContentController', function (Publisher, FeedResource, ItemResource, SettingsResource, data, $route,
-                                              $routeParams, $location, FEED_TYPE, ITEM_AUTO_PAGE_SIZE, Loading,
-                                              $filter) {
+app.controller('ContentController', function (Publisher, FeedResource, ItemResource, SharingRessource, 
+                                            SettingsResource, data, $route, $routeParams, $location, 
+                                            FEED_TYPE, ITEM_AUTO_PAGE_SIZE, Loading, $filter,
+                                            $rootScope) {
     'use strict';
 
     var self = this;
@@ -17,6 +18,21 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
 
     // distribute data to models based on key
     Publisher.publishAll(data);
+
+    this.shareMode = false;
+    this.shareAppear = false;
+    this.textTag = '';
+    this.textSelection = '';
+    this.pos = {
+        x:0,
+        y:0
+    };
+    this.myStyle = {
+        'position' : 'fixed',
+        'left' : '0px',
+        'top' : '0px'
+    };
+    this.errorMessage= '';
 
     this.getFirstItem = function () {
         var orderFilter = $filter('orderBy');
@@ -201,13 +217,6 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
         }
     };
 
-    //Form adapting to share on another platforms, like twitter.
-    this.adaptTextTo = function () {
-        //return FeedResource.adaptText(text);
-        var test = 'test';
-        return test;
-    };
-
     this.refresh = function () {
         $route.reload();
     };
@@ -220,6 +229,74 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
         } else {
             return undefined;
         }
+    };
+
+    this.getAllTags = function () {
+        return SharingRessource.getAllTags();
+    };
+
+    this.getTag = function (index){
+        return SharingRessource.getTag(index);
+    };
+
+    this.createTag = function (tag) {
+        SharingRessource.addTag(tag);
+    };
+
+    this.updateTag = function (index,tag){
+        SharingRessource.updateTag(index,tag);
+    };
+
+    this.deleteTag = function (index){
+        SharingRessource.deleteTag(index);
+    };
+
+    /**
+     * For button apparition and vanishing
+     */
+    this.handleClick = function () {
+        this.textSelection = window.getSelection();
+        if(this.textSelection.toString().length > 0){
+            this.shareAppear = true;
+            this.myStyle = {
+                'position' : 'fixed',
+                'left' : `${(this.pos.x).toString()}px`,
+                'top' : `${(this.pos.y).toString()}px`
+            };
+        }
+        else{
+            this.shareAppear = false;
+        }
+    };
+
+    /**
+     * Function to get cursor position
+     * @param {*} event 
+     */
+    this.getPos = function (event) {
+        this.pos.x = event.clientX;
+        this.pos.y = event.clientY;
+    };
+
+    /**
+     * Function to go on sharemode
+     * @param {string} textSelection Text selection of user
+     */
+    this.startSharing = function (textSelection) {
+        var text = '';
+        var err = '';
+
+        //Handling too long message for tweet
+        if(textSelection.toString().length > 254){
+            text = textSelection.toString().substring(0,250);
+            text += ' ...';
+
+            err = 'Attention, votre message est trop long, et a été raccourci.';
+        }
+        else{
+            text = textSelection.toString();
+        }
+        $rootScope.$broadcast('addShare',text,err);
     };
 
     this.activeItem = this.getFirstItem();

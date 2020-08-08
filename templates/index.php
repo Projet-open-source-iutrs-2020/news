@@ -54,6 +54,7 @@ foreach (Plugin::getScripts() as $appName => $fileName) {
         <ul class="with-icon" data-id="0" news-droppable>
             <?php print_unescaped($this->inc('part.navigation.addfeed')) ?>
             <?php print_unescaped($this->inc('part.navigation.addfolder')) ?>
+            <?php print_unescaped($this->inc('part.navigation.sharing'))?>
             <?php print_unescaped($this->inc('part.navigation.unreadfeed')) ?>
             <?php print_unescaped($this->inc('part.navigation.starredfeed')) ?>
             <?php print_unescaped($this->inc(

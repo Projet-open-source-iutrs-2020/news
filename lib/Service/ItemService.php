@@ -174,6 +174,27 @@ class ItemService extends Service
         }
     }
 
+    /**
+     * Change the share mode on twitter for the form
+     */
+    public function mode($feedId, $guidHash, $userId)
+    {
+        try{
+            /**
+            * @var Item $item
+            */
+            $item = $this->itemMapper->findByGuidHash(
+                $guidHash,
+                $feedId,
+                $userId
+            );
+
+            $item->switchMode();
+        } catch (DoesNotExistException $ex) {
+            throw new ServiceNotFoundException($ex->getMessage());
+        }
+    }
+
 
     /**
      * Read or unread an item

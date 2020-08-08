@@ -18,7 +18,6 @@ use OCP\Files\Folder;
 
 class Config
 {
-
     private $fileSystem;
     private $autoPurgeMinimumInterval;  // seconds, used to define how
                                         // long deleted folders and feeds

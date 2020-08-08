@@ -98,4 +98,10 @@ return ['routes' => [
 ['name' => 'item_api#star_multiple', 'url' => '/api/v1-2/items/star/multiple', 'verb' => 'PUT'], // FIXME: POST would be more correct
 ['name' => 'item_api#unstar_multiple', 'url' => '/api/v1-2/items/unstar/multiple', 'verb' => 'PUT'], // FIXME: POST would be more correct
 
+// sharing
+['name' => 'sharing#index', 'url' => '/sharing/getTags', 'verb' => 'GET'],
+['name' => 'sharing#show', 'url' => '/sharing/getTag/{id}', 'verb' => 'GET'],
+['name' => 'sharing#create', 'url' => '/sharing/create', 'verb' => 'POST'],
+['name' => 'sharing#update', 'url' => '/sharing/update/{id}', 'verb' => 'PUT'],
+['name' => 'sharing#destroy', 'url' => '/sharing/delete/{id}', 'verb' => 'DELETE']
 ]];

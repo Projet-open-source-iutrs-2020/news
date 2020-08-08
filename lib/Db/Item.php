@@ -61,6 +61,8 @@ class Item extends Entity implements IAPI, \JsonSerializable
     protected $unread = false;
     /** @var bool */
     protected $starred = false;
+    /** @val bool */
+    protected $shareMode = true;
 
     /**
      * @return int
@@ -248,6 +250,11 @@ class Item extends Entity implements IAPI, \JsonSerializable
         return $this->unread;
     }
 
+    public function getShareMode()
+    {
+        return $this->shareMode;
+    }
+
     /**
      * Turns entity attributes into an array
      */
@@ -274,6 +281,7 @@ class Item extends Entity implements IAPI, \JsonSerializable
             'rtl' => $this->getRtl(),
             'intro' => $this->getIntro(),
             'fingerprint' => $this->getFingerprint(),
+            'shareMode' => $this->getShareMode(),
         ];
     }
 
@@ -453,6 +461,14 @@ class Item extends Entity implements IAPI, \JsonSerializable
         ) {
             $this->url = $url;
             $this->markFieldUpdated('url');
+        }
+    }
+
+    //Function only for changing sharing mode of an item
+    public function switchMode()
+    {
+        if(isset($shareMode)){
+            $this->shareMode = !$this->shareMode;
         }
     }
 
