@@ -7,6 +7,10 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @copyright Bernhard Posselt 2014
  */
+
+ /*
+ * This service is not implemented yet
+ */
 app.factory('SharingRessource', function (Resource, $http, BASE_URL) {
     'use strict';
 
@@ -16,7 +20,10 @@ app.factory('SharingRessource', function (Resource, $http, BASE_URL) {
 
     SharingRessource.prototype = Object.create(Resource.prototype);
 
-    //Used for creating new tags for twitter on the tag list
+    /**
+     * A function to create new tag
+     * @param {*} tag The tag to create
+     */
     SharingRessource.prototype.addTag = function (tag) {
         var url = this.BASE_URL + 
         '/sharing/create';
@@ -25,7 +32,7 @@ app.factory('SharingRessource', function (Resource, $http, BASE_URL) {
             url: url,
             method: 'POST',
             data:{
-                tag: tag
+                tag: tag.toString()
             }
         }).then(function (response) {
             return response.data;
@@ -34,7 +41,9 @@ app.factory('SharingRessource', function (Resource, $http, BASE_URL) {
         });
     };
 
-    //For getting all tag for twitter sharing
+    /**
+     * A function to get all tags
+     */
     SharingRessource.prototype.getAllTags = function () {
         var url = this.BASE_URL + 
         '/sharing/getTags';
@@ -45,43 +54,38 @@ app.factory('SharingRessource', function (Resource, $http, BASE_URL) {
         });
     };
 
-    SharingRessource.prototype.getTag = function (tagId) {
+    /**
+     * A function to update new tag
+     * @param {*} tag The tag to update
+     * @param {*} value The value of the tag
+     */
+    SharingRessource.prototype.updateTag = function (tag, value) {
         var url = this.BASE_URL + 
-        '/sharing/getTag/' + tagId;
-
-        return this.http({
-            url: url,
-            method: 'POST',
-            data:{
-                tagId: tagId
-            }
-        });
-    };
-
-
-    SharingRessource.prototype.updateTag = function (tagId, tag) {
-        var url = this.BASE_URL + 
-        '/sharing/update/' + tagId;
+        '/sharing/update/' + tag;
 
         return this.http({
             url: url,
             method: 'PUT',
             data:{
-                sharingTag: tag,
-                tagId: tagId
+                value: value,
+                tag: tag
             }
         });
     };
 
-    SharingRessource.prototype.deleteTag = function (tagId) {
+    /**
+     * A function to delete tag
+     * @param {*} tag The tag to delete
+     */
+    SharingRessource.prototype.deleteTag = function (tag) {
         var url = this.BASE_URL + 
-        '/sharing/delete/' + tagId;
+        '/sharing/delete/' + tag;
 
         return this.http({
             url: url,
             method: 'DELETE',
             data:{
-                tagId: tagId
+                tag: tag
             }
         });
     };

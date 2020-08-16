@@ -7,10 +7,9 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @copyright Bernhard Posselt 2014
  */
-app.controller('ContentController', function (Publisher, FeedResource, ItemResource, SharingRessource, 
+app.controller('ContentController', function (Publisher, FeedResource, ItemResource, $rootScope, 
                                             SettingsResource, data, $route, $routeParams, $location, 
-                                            FEED_TYPE, ITEM_AUTO_PAGE_SIZE, Loading, $filter,
-                                            $rootScope) {
+                                            FEED_TYPE, ITEM_AUTO_PAGE_SIZE, Loading, $filter) {
     'use strict';
 
     var self = this;
@@ -21,7 +20,7 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
 
     this.shareMode = false;
     this.shareAppear = false;
-    this.textTag = '';
+    this.textTag = 'Test';
     this.textSelection = '';
     this.pos = {
         x:0,
@@ -231,52 +230,24 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
         }
     };
 
-    this.getAllTags = function () {
-        return SharingRessource.getAllTags();
-    };
-
-    this.getTag = function (index){
-        return SharingRessource.getTag(index);
-    };
-
-    this.createTag = function (tag) {
-        SharingRessource.addTag(tag);
-    };
-
-    this.updateTag = function (index,tag){
-        SharingRessource.updateTag(index,tag);
-    };
-
-    this.deleteTag = function (index){
-        SharingRessource.deleteTag(index);
-    };
+    
 
     /**
      * For button apparition and vanishing
      */
-    this.handleClick = function () {
+    this.handleClick = function (event) {
         this.textSelection = window.getSelection();
         if(this.textSelection.toString().length > 0){
             this.shareAppear = true;
             this.myStyle = {
                 'position' : 'fixed',
-                'left' : `${(this.pos.x).toString()}px`,
-                'top' : `${(this.pos.y).toString()}px`
+                'left' : `${(event.clientX).toString()}px`,
+                'top' : `${(event.clientY).toString()}px`
             };
         }
         else{
             this.shareAppear = false;
         }
-    };
-
-    /**
-     * Function to get cursor position
-     * @param {*} event 
-     */
-    this.getPos = function (event) {
-        this.pos.x = event.clientX;
-        this.pos.y = event.clientY;
-        alert(pos);
     };
 
     /**

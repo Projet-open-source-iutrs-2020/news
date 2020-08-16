@@ -40,6 +40,9 @@ foreach (Plugin::getScripts() as $appName => $fileName) {
     <script type="text/ng-template" id="explore.html">
         <?php print_unescaped($this->inc('part.content.explore')) ?>
     </script>
+    <script type="text/ng-template" id="sharingSetting.html">
+        <?php print_unescaped($this->inc('part.content.sharingSettings'))?>
+    </script>
 
     <!-- navigation -->
     <div id="app-navigation"
@@ -55,6 +58,7 @@ foreach (Plugin::getScripts() as $appName => $fileName) {
             <?php print_unescaped($this->inc('part.navigation.addfeed')) ?>
             <?php print_unescaped($this->inc('part.navigation.addfolder')) ?>
             <?php print_unescaped($this->inc('part.navigation.sharing'))?>
+            <?php print_unescaped($this->inc('part.navigation.sharingSettings'))?>
             <?php print_unescaped($this->inc('part.navigation.unreadfeed')) ?>
             <?php print_unescaped($this->inc('part.navigation.starredfeed')) ?>
             <?php print_unescaped($this->inc(

@@ -38,6 +38,8 @@ class SharingController extends Controller
     }
 
     /**
+     * A function to get all tags
+     * 
      * @NoAdminRequired
      */
     public function index() {
@@ -46,9 +48,11 @@ class SharingController extends Controller
     }
 
     /**
+     * A function to show on tag (Any uses, but maybe for future ..)
+     * 
      * @NoAdminRequired
      *
-     * @param int $id
+     * @param int $id The id of the tag
      */
     public function show(int $id) 
     {
@@ -61,6 +65,8 @@ class SharingController extends Controller
     }
 
     /**
+     * A function to create new tag
+     * 
      * @NoAdminRequired
      *
      * @param string $tag
@@ -69,7 +75,7 @@ class SharingController extends Controller
     public function create($tag) {
         try
         {   
-            $sharings = $this->service->create($tag);
+            $sharings = $this->service->create($tag, $this->userId);
             return ['sharings' => [$sharings]];
         } catch (ServiceConflictException $ex) {
             return $this->error($ex, Http::STATUS_CONFLICT);
@@ -79,22 +85,49 @@ class SharingController extends Controller
     }
 
     /**
+     * A function to update tag
+     * 
      * @NoAdminRequired
      *
-     * @param int $id
-     * @param string $title
-     * @param string $content
+     * @param string $tag The tag that we want to change value
+     * @param string $value The new tag value
      */
-    public function update(int $id, string $tag) {
-        return ;
+    public function update(string $tag, string $value) {
+        try {
+            $sharing = $this->service->update(
+                $tag,
+                $value
+            );
+
+            return ['sharings' => [$sharing]];
+        } catch (ServiceConflictException $ex) {
+            return $this->error($ex, Http::STATUS_CONFLICT);
+        } catch (ServiceValidationException $ex) {
+            return $this->error($ex, Http::STATUS_UNPROCESSABLE_ENTITY);
+        } catch (ServiceNotFoundException $ex) {
+            return $this->error($ex, Http::STATUS_NOT_FOUND);
+        }
     }
 
     /**
+     * A function to delete a tag
+     * 
      * @NoAdminRequired
      *
-     * @param int $id
+     * @param string $tag The tag that we want to delete
      */
-    public function destroy(int $id) {
-        return ;
+    public function destroy(string $tag) {
+        try{
+            $sharing = $this->service->delete(
+                $tag
+            );
+            return ['sharing' => $sharing];
+        }catch (ServiceConflictException $ex) {
+            return $this->error($ex, Http::STATUS_CONFLICT);
+        } catch (ServiceValidationException $ex) {
+            return $this->error($ex, Http::STATUS_UNPROCESSABLE_ENTITY);
+        } catch (ServiceNotFoundException $ex) {
+            return $this->error($ex, Http::STATUS_NOT_FOUND);
+        }
     }
 }

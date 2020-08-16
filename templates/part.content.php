@@ -150,7 +150,7 @@
                 <div class="enclosure description" ng-if="item.mediaDescription" news-bind-html-unsafe="item.mediaDescription"></div>
 
                 <div class="body" news-bind-html-unsafe="item.body" news-selection on-selected="textSelected" ng-attr-dir="{{item.rtl && 'rtl'}}"
-                ng-mouseup="Content.handleClick()" ng-mousemove="Content.getPos($event)"></div>
+                ng-mouseup="Content.handleClick($event)"></div>
                 <button ng-click="Content.startSharing(Content.textSelection)" ng-if="Content.shareAppear" ng-style="Content.myStyle"> Partager</button>
             </div>
         </li>

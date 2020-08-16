@@ -21,10 +21,13 @@ class Sharing extends Entity implements IAPI, \JsonSerializable
 
     /** @var string */
     protected $shareTag = '';
+    /** @var string */
+    protected $userId = '';
     /** @var string|null */
     protected $lastModified = '0';    
 
     /**
+     * A function to get the value of tag
      * @return null|string
      */
     public function getShareTag()
@@ -33,6 +36,7 @@ class Sharing extends Entity implements IAPI, \JsonSerializable
     }
 
     /**
+     * A function to get last modified date
      * @return string|null
      */
     public function getLastModified()
@@ -41,17 +45,19 @@ class Sharing extends Entity implements IAPI, \JsonSerializable
     }
 
     /**
+     * A function to set new tag
      * @return null
      */
-    public function setTag($value)
+    public function setTag(string $value)
     {
         if ($this->shareTag !== $value){
             $this->shareTag = $value;
-            $this->markFieldUpdated('tag');
+            $this->markFieldUpdated('shareTag');
         }     
     }
 
     /**
+     * A function to set the last modified date of tag
      * @param string|null $lastModified
      */
     public function setLastModified(string $lastModified = null)
@@ -67,7 +73,8 @@ class Sharing extends Entity implements IAPI, \JsonSerializable
         return
             [
                 'id' => $this->id,
-                'tag' => $this->shareTag
+                'userId' => $this->userId,
+                'shareTag' => $this->shareTag
             ];
     }
 
@@ -75,7 +82,28 @@ class Sharing extends Entity implements IAPI, \JsonSerializable
     {
         return [
             'id' => $this->id,
-            'tag' => $this->shareTag
+            'shareTag' => $this->shareTag
         ];
+    }
+
+    /**
+     * A function to get user id (traceability on logs)
+     * @return string
+     */
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+
+    /**
+     * A function to set user id
+     * @param string $userId
+     */
+    public function setUserId(string $userId)
+    {
+        if ($this->userId !== $userId) {
+            $this->userId = $userId;
+            $this->markFieldUpdated('userId');
+        }
     }
 }

@@ -102,6 +102,6 @@ return ['routes' => [
 ['name' => 'sharing#index', 'url' => '/sharing/getTags', 'verb' => 'GET'],
 ['name' => 'sharing#show', 'url' => '/sharing/getTag/{id}', 'verb' => 'GET'],
 ['name' => 'sharing#create', 'url' => '/sharing/create', 'verb' => 'POST'],
-['name' => 'sharing#update', 'url' => '/sharing/update/{id}', 'verb' => 'PUT'],
-['name' => 'sharing#destroy', 'url' => '/sharing/delete/{id}', 'verb' => 'DELETE']
+['name' => 'sharing#update', 'url' => '/sharing/update/{tag}', 'verb' => 'PUT'],
+['name' => 'sharing#destroy', 'url' => '/sharing/delete/{tag}', 'verb' => 'DELETE']
 ]];
