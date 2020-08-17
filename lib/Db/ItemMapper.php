@@ -64,7 +64,10 @@ class ItemMapper extends NewsMapper
         if (isset($type) && $type === FeedType::STARRED) {
             $sql = 'AND `items`.`starred` = ';
             $sql .= $this->db->quote(true, IQueryBuilder::PARAM_BOOL) . ' ';
-        } elseif (!$showAll || $type === FeedType::UNREAD) {
+        } elseif (isset($type) && $type === FeedType::LIKED) {
+            $sql .= 'AND `items`.`liked` = ';
+            $sql .= $this->db->quote(true, IQueryBuilder::PARAM_BOOL) . ' ';
+        }elseif (!$showAll || $type === FeedType::UNREAD) {
             $sql .= 'AND `items`.`unread` = ';
             $sql .= $this->db->quote(true, IQueryBuilder::PARAM_BOOL) . ' ';
         }
@@ -471,5 +474,61 @@ class ItemMapper extends NewsMapper
             $item->setUnread(true);
             $this->update($item);
         }
+    }
+
+    public function likedCount($title)
+    {
+        $sql = 'SELECT COUNT(*) AS liked FROM `*PREFIX*news_items`
+            WHERE `liked` = ? AND `title` = ?';
+        $params = [true, $title];
+        $result = $this->execute($sql, $params)->fetch();
+        return (int)$result['liked'];
+    }
+
+    public function likeItem($itemId, $isLiked, $lastModified, $userId)
+    {
+        $item = $this->find($itemId, $userId);
+
+        $sql = 'UPDATE `*PREFIX*news_items`
+            SET `liked` = ?,
+                `last_modified` = ?
+            WHERE `fingerprint` = ?
+                AND `feed_id` IN (
+                    SELECT `f`.`id` FROM `*PREFIX*news_feeds` AS `f`
+                        WHERE `f`.`user_id` = ?
+                )';
+        $params = [$isLiked, $lastModified, $item->getFingerprint(), $userId];
+        $this->execute($sql, $params);
+        $this->likeItemTotal($itemId, $lastModified, $item->getTitle());
+    }
+
+    public function likeItemTotal($itemId, $lastModified, $title)
+    {
+        $sql = 'UPDATE `*PREFIX*news_items`
+            SET `likedCount` = ?,
+                `last_modified` = ?
+            WHERE `title` = ?';
+        $params = [$this->likedCount($title), $lastModified, $title];        
+        $this->execute($sql, $params);
+    }
+
+    public function likedCountUser($userId)
+    {
+        $sql = 'SELECT COUNT(*) AS size FROM `*PREFIX*news_items` `items` ' .
+            'JOIN `*PREFIX*news_feeds` `feeds` ' .
+            'ON `feeds`.`id` = `items`.`feed_id` ' .
+            'AND `feeds`.`deleted_at` = 0 ' .
+            'AND `feeds`.`user_id` = ? ' .
+            'AND `items`.`liked` = ? ' .
+            'LEFT OUTER JOIN `*PREFIX*news_folders` `folders` ' .
+            'ON `folders`.`id` = `feeds`.`folder_id` ' .
+            'WHERE `feeds`.`folder_id` = 0 ' .
+            'OR `folders`.`deleted_at` = 0';
+
+        $params = [$userId, true];
+
+        $result = $this->execute($sql, $params)->fetch();
+
+        return (int)$result['size'];
     }
 }

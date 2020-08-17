@@ -393,6 +393,19 @@
                 <notnull>false</notnull>
                 <unsigned>true</unsigned>
             </field>
+            <field>
+                <name>liked</name>
+                <type>boolean</type>
+                <default>false</default>
+                <notnull>true</notnull>
+            </field>
+            <field>
+                <name>likedCount</name>
+                <type>integer</type>
+                <default>0</default>
+                <length>8</length>
+                <notnull>true</notnull>
+            </field>
 
             <index>
                 <name>news_items_last_mod_idx</name>

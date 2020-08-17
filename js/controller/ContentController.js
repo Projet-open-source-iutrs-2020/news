@@ -39,6 +39,10 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
     this.getItems = function () {
         return ItemResource.getAll();
     };
+    
+    this.getUsers = function () {
+        return ItemResource.getAllUsers();
+    };
 
     this.isItemActive = function (id) {
         return this.activeItem === id;
@@ -54,6 +58,10 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
 
     this.toggleLike = function (itemId) {
         ItemResource.toggleLike(itemId);
+    };
+
+    this.getLikedCount = function (itemId) {
+        return ItemResource.getLikedCount(itemId);
     };
 
     this.toggleItem = function (item) {

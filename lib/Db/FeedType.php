@@ -22,4 +22,5 @@ class FeedType
     const SHARED        = 4;
     const EXPLORE       = 5;
     const UNREAD        = 6;
+    const LIKED         = 7;
 }

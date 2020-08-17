@@ -122,6 +122,8 @@ class ItemController extends Controller
                 $params['feeds'] = $this->feedService->findAll($this->userId);
                 $params['starred'] =
                     $this->itemService->starredCount($this->userId);
+                $params['liked'] =
+                    $this->itemService->likedCountUser($this->userId);
             }
 
             $params['items'] = $this->itemService->findAll(
@@ -168,6 +170,8 @@ class ItemController extends Controller
             $params['feeds'] = $this->feedService->findAll($this->userId);
             $params['starred'] =
                 $this->itemService->starredCount($this->userId);
+            $params['liked'] =
+                $this->itemService->likedCountUser($this->userId);
             $params['items'] = $this->itemService->findAllNew(
                 $id,
                 $type,
@@ -228,6 +232,23 @@ class ItemController extends Controller
         return [];
     }
 
+    /**
+     * @NoAdminRequired
+     *
+     * @param int  $itemId
+     * @param bool $isLiked
+     * @return array|\OCP\AppFramework\Http\JSONResponse
+     */
+    public function like($itemId, $isLiked = true)
+    {
+        try {
+            $this->itemService->like($itemId, $isLiked, $this->userId);
+        } catch (ServiceException $ex) {
+            return $this->error($ex, Http::STATUS_NOT_FOUND);
+        }
+
+        return [];
+    }
 
     /**
      * @NoAdminRequired

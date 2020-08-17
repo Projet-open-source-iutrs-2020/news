@@ -20,7 +20,7 @@ app.factory('ItemResource', function (Resource, $http, BASE_URL, ITEM_BATCH_SIZE
 
     ItemResource.prototype.clear = function () {
         this.starredCount = 0;
-        this.likedCount = 0;
+        this.likedCount = 5;
         this.lowestId = 0;
         this.highestId = 0;
         this.fingerprints = {};
@@ -35,6 +35,10 @@ app.factory('ItemResource', function (Resource, $http, BASE_URL, ITEM_BATCH_SIZE
 
             case 'starred':
                 this.starredCount = value;
+                break;
+
+            case 'liked':
+                this.likedCount = value;
                 break;
 
             default:
@@ -120,14 +124,16 @@ app.factory('ItemResource', function (Resource, $http, BASE_URL, ITEM_BATCH_SIZE
 
         var it = this.get(itemId);
         var url = this.BASE_URL +
-            '/items/' + it.feedId + '/' + it.guidHash + '/like';
+            '/items/' + itemId + '/like';
 
         it.liked = isLiked;
 
         if (isLiked) {
             this.likedCount += 1;
+            it.likedCount += 1;
         } else {
             this.likedCount -= 1;
+            it.likedCount -= 1;
         }
 
         return this.http({
@@ -145,6 +151,15 @@ app.factory('ItemResource', function (Resource, $http, BASE_URL, ITEM_BATCH_SIZE
         } else {
             this.like(itemId, true);
         }
+    };
+
+    ItemResource.prototype.getLikedCount = function (itemId) {
+        var it = this.get(itemId);
+        return it.likedCount;
+    };
+
+    ItemResource.prototype.getLikedCountTotal = function () {
+        return this.likedCount;
     };
 
 

@@ -110,6 +110,14 @@ app.controller('NavigationController', function ($route, FEED_TYPE, FeedResource
         return ItemResource.getStarredCount();
     };
 
+    this.getLikedCountTotal = function () {
+        return ItemResource.getLikedCountTotal();
+    };
+
+    this.isLikedUnread = function () {
+        return this.getLikedCountTotal() > 0;
+    };
+
     this.isStarredUnread = function () {
         return this.getStarredCount() > 0;
     };
@@ -149,6 +157,11 @@ app.controller('NavigationController', function ($route, FEED_TYPE, FeedResource
     this.isStarredActive = function () {
         return $route.current &&
             $route.current.$$route.type === FEED_TYPE.STARRED;
+    };
+
+    this.isLikedActive = function () {
+        return $route.current &&
+            $route.current.$$route.type === FEED_TYPE.LIKED;
     };
 
     this.isExploreActive = function () {

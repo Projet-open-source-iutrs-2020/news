@@ -17,7 +17,8 @@ app.config(function ($routeProvider, $provide, $httpProvider, $locationProvider)
         SUBSCRIPTIONS: 3,
         SHARED: 4,
         EXPLORE: 5,
-        UNREAD: 6
+        UNREAD: 6,
+        LIKED: 7
     };
 
     // default hashPrefix changed in angular 1.6 to '!'
@@ -190,6 +191,12 @@ app.config(function ($routeProvider, $provide, $httpProvider, $locationProvider)
             templateUrl: 'content.html',
             resolve: getItemResolve(feedType.STARRED),
             type: feedType.STARRED
+        })
+        .when('/items/liked', {
+            controller: 'ContentController as Content',
+            templateUrl: 'content.html',
+            resolve: getItemResolve(feedType.LIKED),
+            type: feedType.LIKED
         })
         .when('/items/unread', {
             controller: 'ContentController as Content',

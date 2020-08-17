@@ -61,6 +61,10 @@ class Item extends Entity implements IAPI, \JsonSerializable
     protected $unread = false;
     /** @var bool */
     protected $starred = false;
+    /** @var bool */
+    protected $liked = false;
+    /** @var int */
+    protected $likedCount = 0;
 
     /**
      * @return int
@@ -93,6 +97,8 @@ class Item extends Entity implements IAPI, \JsonSerializable
         $item->setRtl($import['rtl']);
         $item->setUnread($import['unread']);
         $item->setStarred($import['starred']);
+        $item->setLike($import['liked']);
+        $item->setLikedCount($import['likedCount']);
 
         return $item;
     }
@@ -248,6 +254,16 @@ class Item extends Entity implements IAPI, \JsonSerializable
         return $this->unread;
     }
 
+    public function isLiked()
+    {
+        return $this->liked;
+    }
+
+    public function getLikedCount()
+    {
+        return $this->likedCount;
+    }
+
     /**
      * Turns entity attributes into an array
      */
@@ -274,6 +290,8 @@ class Item extends Entity implements IAPI, \JsonSerializable
             'rtl' => $this->getRtl(),
             'intro' => $this->getIntro(),
             'fingerprint' => $this->getFingerprint(),
+            'liked' => $this->isLiked(),
+            'likedCount' => $this->getLikedCount(),
         ];
     }
 
@@ -419,6 +437,22 @@ class Item extends Entity implements IAPI, \JsonSerializable
         }
     }
 
+    public function setLiked(bool $liked)
+    {
+        if ($this->liked !== $liked) {
+            $this->liked = $liked;
+            $this->markFieldUpdated('liked');
+        }
+    }
+
+    public function setLikedCount(int $likedCount)
+    {
+        if ($this->likedCount !== $likedCount) {
+            $this->likedCount = $likedCount;
+            $this->markFieldUpdated('likedCount');
+        }
+    }
+
     public function setTitle(string $title = null)
     {
         $title = strip_tags($title);
@@ -478,7 +512,9 @@ class Item extends Entity implements IAPI, \JsonSerializable
             'lastModified' => $this->cropApiLastModified(),
             'rtl' => $this->getRtl(),
             'fingerprint' => $this->getFingerprint(),
-            'contentHash' => $this->getContentHash()
+            'contentHash' => $this->getContentHash(),
+            'liked' => $this->isLiked(),
+            'likedCount' => $this->getLikedCount()
         ];
     }
 
@@ -500,6 +536,8 @@ class Item extends Entity implements IAPI, \JsonSerializable
             'starred' => $this->isStarred(),
             'feedLink' => $feeds['feed' . $this->getFeedId()]->getLink(),
             'rtl' => $this->getRtl(),
+            'liked' => $this->isLiked(),
+            'likedCount' => $this->getLikedCount(),
         ];
     }
 

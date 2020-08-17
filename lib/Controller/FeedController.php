@@ -64,7 +64,8 @@ class FeedController extends Controller
         // item id which will be used for marking feeds read
         $params = [
             'feeds' => $this->feedService->findAll($this->userId),
-            'starred' => $this->itemService->starredCount($this->userId)
+            'starred' => $this->itemService->starredCount($this->userId),
+            'liked' => $this->itemService->likedCountUser($this->userId)
         ];
 
         try {
@@ -232,7 +233,8 @@ class FeedController extends Controller
         $feed = $this->feedService->importArticles($json, $this->userId);
 
         $params = [
-            'starred' => $this->itemService->starredCount($this->userId)
+            'starred' => $this->itemService->starredCount($this->userId),
+            'liked' => $this->itemService->likedCountUser($this->userId)
         ];
 
         if ($feed) {

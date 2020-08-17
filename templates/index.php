@@ -61,6 +61,7 @@ foreach (Plugin::getScripts() as $appName => $fileName) {
             )) ?>
             <?php print_unescaped($this->inc('part.navigation.folder')) ?>
             <?php print_unescaped($this->inc('part.navigation.explore')) ?>
+            <?php print_unescaped($this->inc('part.navigation.liked')) ?>
         </ul>
 
         <!-- settings -->

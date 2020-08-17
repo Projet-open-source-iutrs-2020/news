@@ -194,6 +194,15 @@ class ItemService extends Service
         }
     }
 
+    public function like($itemId, $isLiked, $userId)
+    {
+        try {
+            $lastModified = $this->timeFactory->getMicroTime();
+            $this->itemMapper->likeItem($itemId, $isLiked, $lastModified, $userId);
+        } catch (DoesNotExistException $ex) {
+            throw new ServiceNotFoundException($ex->getMessage());
+        }
+    }
 
     /**
      * Set all items read
@@ -288,6 +297,11 @@ class ItemService extends Service
     public function starredCount($userId)
     {
         return $this->itemMapper->starredCount($userId);
+    }
+
+    public function likedCountUser($userId)
+    {
+        return $this->itemMapper->likedCountUser($userId);
     }
 
 
