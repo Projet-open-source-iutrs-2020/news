@@ -15,10 +15,12 @@ app.controller('NavigationController', function ($route, FEED_TYPE, FeedResource
     this.showNewFolder = false;
     this.renamingFolder = false;
     this.addingFeed = false;
+    this.addingShare = false;
     this.addingFolder = false;
     this.folderError = '';
     this.renameError = '';
     this.feed = {};
+    this.shareData = {};
     this.youtubeDetectorRegex = new RegExp(/youtube\.[a-z\.]{2,}\/(user|channel)\/(.*?)(\/|\?|$)/);
     this.sharing = false;
 

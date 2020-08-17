@@ -15,7 +15,6 @@
     <button ng-controller="NavigationController as Navigation" id="mark-all-read-button" ng-click="Navigation.markCurrentRead()" class="hidden">
         <span title="Mark Read" class="icon-checkmark"></span>
     </button>
-
     <ul>
         <li class="item {{ ::Content.getFeed(item.feedId).cssClass }}"
             ng-repeat="item in Content.getItems() |
@@ -105,7 +104,7 @@
                     <li>
                         {{ Content.getLikedCount(item.id) }}
                     </li>
-
+                    
                     <li class="util more" news-stop-propagation ng-hide="noPlugins">
                         <button class="icon-more" news-toggle-show="#actions-{{item.id}}"></button>
                         <div class="article-actions" id="actions-{{item.id}}">
@@ -168,16 +167,11 @@
 
                 <div class="enclosure description" ng-if="item.mediaDescription" news-bind-html-unsafe="item.mediaDescription"></div>
 
-                <div class="body" news-bind-html-unsafe="item.body" ng-attr-dir="{{item.rtl && 'rtl'}}"></div>
-                
-                
-            </div>
-
-            <div>
-                <a class="twitter-share-button"
-                    ng-href="https://twitter.com/intent/tweet?text={{ item.title }}">
-                    Tweet</a>
+                <div class="body" news-bind-html-unsafe="item.body" news-selection on-selected="textSelected" ng-attr-dir="{{item.rtl && 'rtl'}}"
+                ng-mouseup="Content.handleClick($event)"></div>
+                <button ng-click="Content.startSharing(Content.textSelection)" ng-if="Content.shareAppear" ng-style="Content.myStyle"> Partager</button>
             </div>
         </li>
     </ul>
 </div>
+

@@ -215,7 +215,12 @@ app.config(function ($routeProvider, $provide, $httpProvider, $locationProvider)
             templateUrl: 'content.html',
             resolve: getItemResolve(feedType.FOLDER),
             type: feedType.FOLDER
-        }).when('/explore', {
+        }).when('/sharingSettings', {
+            controller: 'SettingsController as Settings',
+            templateUrl: 'sharingSettings.html',
+            type: feedType.FOLDER
+        })
+        .when('/explore', {
         controller: 'ExploreController as Explore',
         templateUrl: 'explore.html',
         resolve: getExploreResolve(),

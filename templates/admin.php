@@ -1,6 +1,8 @@
 <?php
-script('news', 'admin/Admin');
+use OCA\News\Plugin\Client\Plugin;
+script('news','admin/Admin');
 style('news', 'admin');
+
 ?>
 
 <div class="section" id="news">

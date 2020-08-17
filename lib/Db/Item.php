@@ -65,6 +65,8 @@ class Item extends Entity implements IAPI, \JsonSerializable
     protected $liked = false;
     /** @var int */
     protected $likedCount = 0;
+    /** @var bool */
+    protected $shareMode = true;
 
     /**
      * @return int
@@ -263,6 +265,11 @@ class Item extends Entity implements IAPI, \JsonSerializable
     {
         return $this->likedCount;
     }
+    
+    public function getShareMode()
+    {
+        return $this->shareMode;
+    }
 
     /**
      * Turns entity attributes into an array
@@ -292,6 +299,7 @@ class Item extends Entity implements IAPI, \JsonSerializable
             'fingerprint' => $this->getFingerprint(),
             'liked' => $this->isLiked(),
             'likedCount' => $this->getLikedCount(),
+            'shareMode' => $this->getShareMode(),
         ];
     }
 
@@ -487,6 +495,14 @@ class Item extends Entity implements IAPI, \JsonSerializable
         ) {
             $this->url = $url;
             $this->markFieldUpdated('url');
+        }
+    }
+
+    //Function only for changing sharing mode of an item
+    public function switchMode()
+    {
+        if(isset($shareMode)){
+            $this->shareMode = !$this->shareMode;
         }
     }
 

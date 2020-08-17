@@ -7,9 +7,9 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @copyright Bernhard Posselt 2014
  */
-app.controller('ContentController', function (Publisher, FeedResource, ItemResource, SettingsResource, data, $route,
-                                              $routeParams, $location, FEED_TYPE, ITEM_AUTO_PAGE_SIZE, Loading,
-                                              $filter) {
+app.controller('ContentController', function (Publisher, FeedResource, ItemResource, $rootScope, 
+                                            SettingsResource, data, $route, $routeParams, $location, 
+                                            FEED_TYPE, ITEM_AUTO_PAGE_SIZE, Loading, $filter) {
     'use strict';
 
     var self = this;
@@ -17,6 +17,21 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
 
     // distribute data to models based on key
     Publisher.publishAll(data);
+
+    this.shareMode = false;
+    this.shareAppear = false;
+    this.textTag = 'Test';
+    this.textSelection = '';
+    this.pos = {
+        x:0,
+        y:0
+    };
+    this.myStyle = {
+        'position' : 'fixed',
+        'left' : '0px',
+        'top' : '0px'
+    };
+    this.errorMessage= '';
 
     this.getFirstItem = function () {
         var orderFilter = $filter('orderBy');
@@ -38,10 +53,6 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
 
     this.getItems = function () {
         return ItemResource.getAll();
-    };
-    
-    this.getUsers = function () {
-        return ItemResource.getAllUsers();
     };
 
     this.isItemActive = function (id) {
@@ -225,6 +236,47 @@ app.controller('ContentController', function (Publisher, FeedResource, ItemResou
         } else {
             return undefined;
         }
+    };
+
+    
+
+    /**
+     * For button apparition and vanishing
+     */
+    this.handleClick = function (event) {
+        this.textSelection = window.getSelection();
+        if(this.textSelection.toString().length > 0){
+            this.shareAppear = true;
+            this.myStyle = {
+                'position' : 'fixed',
+                'left' : `${(event.clientX).toString()}px`,
+                'top' : `${(event.clientY).toString()}px`
+            };
+        }
+        else{
+            this.shareAppear = false;
+        }
+    };
+
+    /**
+     * Function to go on sharemode
+     * @param {string} textSelection Text selection of user
+     */
+    this.startSharing = function (textSelection) {
+        var text = '';
+        var err = '';
+
+        //Handling too long message for tweet
+        if(textSelection.toString().length > 254){
+            text = textSelection.toString().substring(0,250);
+            text += ' ...';
+
+            err = 'Attention, votre message est trop long, et a été raccourci.';
+        }
+        else{
+            text = textSelection.toString();
+        }
+        $rootScope.$broadcast('addShare',text,err);
     };
 
     this.activeItem = this.getFirstItem();

@@ -7,13 +7,13 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @copyright Bernhard Posselt 2014
  */
-app.directive('newsAddFeed', function ($rootScope, $timeout) {
+app.directive('newsShare', function ($rootScope, $timeout) {
     'use strict';
 
     return {
         restrict: 'A',
         link: function (scope, elem) {
-            $rootScope.$on('addFeed', function (_, url) {
+            $rootScope.$on('addShare', function (_, textSharing, errorSharing) {
                 $timeout(function () {
                     if (elem.is(':animated')) {
                         elem.stop(true, true);
@@ -21,9 +21,10 @@ app.directive('newsAddFeed', function ($rootScope, $timeout) {
                     } else if (!elem.is(':visible')) {
                         elem.slideDown();
                     }
-                    elem.find('[ng-model="Navigation.feed.url"]').focus();
+                    elem.find('[ng-model="Navigation.shareData.text"]').focus();
                 });
-                scope.Navigation.feed.url = url;
+                scope.Navigation.shareData.textSharing = textSharing;
+                scope.Navigation.shareData.errorMessage = errorSharing;
             });
         }
     };
