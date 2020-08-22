@@ -20,7 +20,7 @@ app.factory('ItemResource', function (Resource, $http, BASE_URL, ITEM_BATCH_SIZE
 
     ItemResource.prototype.clear = function () {
         this.starredCount = 0;
-        this.likedCount = 5;
+        this.likedCount = 0;
         this.lowestId = 0;
         this.highestId = 0;
         this.fingerprints = {};
