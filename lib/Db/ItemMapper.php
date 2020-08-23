@@ -476,11 +476,11 @@ class ItemMapper extends NewsMapper
         }
     }
 
-    public function likedCount($title)
+    public function likedCount($fingerprint)
     {
         $sql = 'SELECT COUNT(*) AS liked FROM `*PREFIX*news_items`
-            WHERE `liked` = ? AND `title` = ?';
-        $params = [true, $title];
+            WHERE `liked` = ? AND `fingerprint` = ?';
+        $params = [true, $fingerprint];
         $result = $this->execute($sql, $params)->fetch();
         return (int)$result['liked'];
     }
@@ -499,16 +499,16 @@ class ItemMapper extends NewsMapper
                 )';
         $params = [$isLiked, $lastModified, $item->getFingerprint(), $userId];
         $this->execute($sql, $params);
-        $this->likeItemTotal($itemId, $lastModified, $item->getTitle());
+        $this->likeItemTotal($itemId, $lastModified, $item->getFingerprint());
     }
 
-    public function likeItemTotal($itemId, $lastModified, $title)
+    public function likeItemTotal($itemId, $lastModified, $fingerprint)
     {
         $sql = 'UPDATE `*PREFIX*news_items`
             SET `likedCount` = ?,
                 `last_modified` = ?
-            WHERE `title` = ?';
-        $params = [$this->likedCount($title), $lastModified, $title];        
+            WHERE `fingerprint` = ?';
+        $params = [$this->likedCount($fingerprint), $lastModified, $fingerprint];        
         $this->execute($sql, $params);
     }
 
